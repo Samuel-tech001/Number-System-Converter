@@ -1,0 +1,83 @@
+#include <iostream>
+#include <string>
+#include <bitset>
+
+using namespace std;
+
+
+int binaryToDecimal(const string &num) {
+    return stoi(num, nullptr, 2);
+}
+
+
+int octalToDecimal(const string &num) {
+    return stoi(num, nullptr, 8);
+}
+
+int hexadecimalToDecimal(const string &num) {
+    return stoi(num, nullptr, 16);
+}
+
+
+string decimalToOctal(int num) {
+    return to_string(num); // Convert directly to string
+}
+
+
+string decimalToHexadecimal(int num) {
+    char buffer[20];
+    sprintf(buffer, "%X", num);
+    return string(buffer);
+}
+
+int main() {
+    string input;
+    int decimalValue = 0;
+    string outputBase;
+    string inputBase;
+
+    
+    cout << "Select input base (Binary, Octal, Decimal, Hexadecimal): ";
+    getline(cin, inputBase); // Read the input base
+
+   
+    cout << "Enter a number: ";
+    getline(cin, input); // Read the entire line
+
+    
+    if (inputBase == "Binary") {
+        decimalValue = binaryToDecimal(input);
+        cout << "Input Base: Binary\n";
+    } else if (inputBase == "Octal") {
+        decimalValue = octalToDecimal(input);
+        cout << "Input Base: Octal\n";
+    } else if (inputBase == "Hexadecimal") {
+        decimalValue = hexadecimalToDecimal(input);
+        cout << "Input Base: Hexadecimal\n";
+    } else if (inputBase == "Decimal") {
+        decimalValue = stoi(input); // Convert directly to decimal
+        cout << "Input Base: Decimal\n";
+    } else {
+        cout << "Invalid input base selected.\n";
+        return 1; // Exit on invalid input base
+    }
+
+    
+    cout << "Select output base (Binary, Decimal, Octal, Hexadecimal): ";
+    getline(cin, outputBase); // Read the output base
+
+    
+    if (outputBase == "Binary") {
+        cout << "Result: " << bitset<32>(decimalValue) << endl; // Convert to binary
+    } else if (outputBase == "Decimal") {
+        cout << "Result: " << decimalValue << endl; // Output decimal
+    } else if (outputBase == "Octal") {
+        cout << "Result: " << oct << decimalValue << dec << endl; // Convert to octal
+    } else if (outputBase == "Hexadecimal") {
+        cout << "Result: " << decimalToHexadecimal(decimalValue) << endl; // Convert to hexadecimal
+    } else {
+        cout << "Invalid output base selected.\n"; // Handle invalid selection
+    }
+
+    return 0; 
+}
