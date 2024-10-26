@@ -20,7 +20,7 @@ int hexadecimalToDecimal(const string &num) {
 
 
 string decimalToOctal(int num) {
-    return to_string(num); // Convert directly to string
+    return to_string(num);
 }
 
 
@@ -38,11 +38,11 @@ int main() {
 
     
     cout << "Select input base (Binary, Octal, Decimal, Hexadecimal): ";
-    getline(cin, inputBase); // Read the input base
+    getline(cin, inputBase); 
 
    
     cout << "Enter a number: ";
-    getline(cin, input); // Read the entire line
+    getline(cin, input); 
 
     
     if (inputBase == "Binary") {
@@ -55,7 +55,7 @@ int main() {
         decimalValue = hexadecimalToDecimal(input);
         cout << "Input Base: Hexadecimal\n";
     } else if (inputBase == "Decimal") {
-        decimalValue = stoi(input); // Convert directly to decimal
+        decimalValue = stoi(input); 
         cout << "Input Base: Decimal\n";
     } else {
         cout << "Invalid input base selected.\n";
@@ -64,19 +64,19 @@ int main() {
 
     
     cout << "Select output base (Binary, Decimal, Octal, Hexadecimal): ";
-    getline(cin, outputBase); // Read the output base
+    getline(cin, outputBase); 
 
     
     if (outputBase == "Binary") {
-        cout << "Result: " << bitset<32>(decimalValue) << endl; // Convert to binary
+        cout << "Result: " << bitset<32>(decimalValue) << endl; 
     } else if (outputBase == "Decimal") {
-        cout << "Result: " << decimalValue << endl; // Output decimal
+        cout << "Result: " << decimalValue << endl; 
     } else if (outputBase == "Octal") {
-        cout << "Result: " << oct << decimalValue << dec << endl; // Convert to octal
+        cout << "Result: " << oct << decimalValue << dec << endl; 
     } else if (outputBase == "Hexadecimal") {
-        cout << "Result: " << decimalToHexadecimal(decimalValue) << endl; // Convert to hexadecimal
+        cout << "Result: " << decimalToHexadecimal(decimalValue) << endl;
     } else {
-        cout << "Invalid output base selected.\n"; // Handle invalid selection
+        cout << "Invalid output base selected.\n"; 
     }
 
     return 0; 
