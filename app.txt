@@ -1,83 +1,79 @@
-#include <iostream>
-#include <string>
-#include <bitset>
+package com.example.conveter // Make sure this matches your package name
 
-using namespace std;
+import android.os.Bundle
+import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Spinner
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 
+class MainActivity : AppCompatActivity() {
 
-int binaryToDecimal(const string &num) {
-    return stoi(num, nullptr, 2);
-}
+    private lateinit var inputNumber: EditText
+    private lateinit var inputBaseSpinner: Spinner
+    private lateinit var outputBaseSpinner: Spinner
+    private lateinit var outputResult: TextView
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
-int octalToDecimal(const string &num) {
-    return stoi(num, nullptr, 8);
-}
+        // Initialize views
+        inputNumber = findViewById(R.id.inputNumber)
+        inputBaseSpinner = findViewById(R.id.inputBaseSpinner)
+        outputBaseSpinner = findViewById(R.id.outputBaseSpinner)
+        outputResult = findViewById(R.id.outputResult)
 
-int hexadecimalToDecimal(const string &num) {
-    return stoi(num, nullptr, 16);
-}
+        // Set up the spinners
+        val bases = arrayOf("Binary", "Octal", "Decimal", "Hexadecimal")
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, bases)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        inputBaseSpinner.adapter = adapter
+        outputBaseSpinner.adapter = adapter
 
-
-string decimalToOctal(int num) {
-    return to_string(num);
-}
-
-
-string decimalToHexadecimal(int num) {
-    char buffer[20];
-    sprintf(buffer, "%X", num);
-    return string(buffer);
-}
-
-int main() {
-    string input;
-    int decimalValue = 0;
-    string outputBase;
-    string inputBase;
-
-    
-    cout << "Select input base (Binary, Octal, Decimal, Hexadecimal): ";
-    getline(cin, inputBase); 
-
-   
-    cout << "Enter a number: ";
-    getline(cin, input); 
-
-    
-    if (inputBase == "Binary") {
-        decimalValue = binaryToDecimal(input);
-        cout << "Input Base: Binary\n";
-    } else if (inputBase == "Octal") {
-        decimalValue = octalToDecimal(input);
-        cout << "Input Base: Octal\n";
-    } else if (inputBase == "Hexadecimal") {
-        decimalValue = hexadecimalToDecimal(input);
-        cout << "Input Base: Hexadecimal\n";
-    } else if (inputBase == "Decimal") {
-        decimalValue = stoi(input); 
-        cout << "Input Base: Decimal\n";
-    } else {
-        cout << "Invalid input base selected.\n";
-        return 1; // Exit on invalid input base
+        // Set the click listener for the convert button
+        findViewById<Button>(R.id.convertButton).setOnClickListener {
+            convertNumber()
+        }
     }
 
-    
-    cout << "Select output base (Binary, Decimal, Octal, Hexadecimal): ";
-    getline(cin, outputBase); 
+    private fun convertNumber() {
+        val inputBase = inputBaseSpinner.selectedItem.toString()
+        val outputBase = outputBaseSpinner.selectedItem.toString()
+        val input = inputNumber.text.toString()
 
-    
-    if (outputBase == "Binary") {
-        cout << "Result: " << bitset<32>(decimalValue) << endl; 
-    } else if (outputBase == "Decimal") {
-        cout << "Result: " << decimalValue << endl; 
-    } else if (outputBase == "Octal") {
-        cout << "Result: " << oct << decimalValue << dec << endl; 
-    } else if (outputBase == "Hexadecimal") {
-        cout << "Result: " << decimalToHexadecimal(decimalValue) << endl;
-    } else {
-        cout << "Invalid output base selected.\n"; 
+        // Check for empty input
+        if (input.isEmpty()) {
+            outputResult.text = "Please enter a number."
+            return
+        }
+
+        // Convert input to decimal
+        val decimalValue = try {
+            when (inputBase) {
+                "Binary" -> input.toInt(2)
+                "Octal" -> input.toInt(8)
+                "Hexadecimal" -> input.toInt(16)
+                "Decimal" -> input.toInt()
+                else -> 0
+            }
+        } catch (e: NumberFormatException) {
+            outputResult.text = "Invalid number format."
+            return
+        }
+
+        // Convert decimal to the desired output base
+        val result = when (outputBase) {
+            "Binary" -> Integer.toBinaryString(decimalValue)
+            "Decimal" -> decimalValue.toString()
+            "Octal" -> Integer.toOctalString(decimalValue)
+            "Hexadecimal" -> Integer.toHexString(decimalValue).uppercase()
+            else -> ""
+        }
+
+        // Display the result
+        outputResult.text = result
     }
-
-    return 0; 
 }
